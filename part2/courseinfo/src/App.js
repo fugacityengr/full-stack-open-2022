@@ -14,11 +14,21 @@ const Parts = ({ parts }) => (
   </>
 );
 
+const Total = ({ parts }) => (
+  <>
+    <strong>
+      total of {parts.reduce((total, part) => total + part.exercises, 0)}{" "}
+      exercises
+    </strong>
+  </>
+);
+
 const Course = ({ course }) => {
   return (
     <>
       <Header name={course.name} />
       <Parts parts={course.parts} />
+      <Total parts={course.parts} />
     </>
   );
 };
