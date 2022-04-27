@@ -1,4 +1,7 @@
 import { useState } from "react";
+import Filter from "./components/Filter";
+import PersonForm from "./components/PersonForm";
+import Persons from "./components/Persons";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -11,14 +14,15 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [filterCharacter, setFilterCharacter] = useState("");
 
+  const handleFilterInput = (event) => {
+    setFilterCharacter(event.target.value);
+  };
+
   const handlePersonInput = (event) => {
     setNewName(event.target.value);
   };
-  const handlerNumberInput = (event) => {
+  const handleNumberInput = (event) => {
     setNewNumber(event.target.value);
-  };
-  const handleFilterInput = (event) => {
-    setFilterCharacter(event.target.value);
   };
 
   const addPerson = (event) => {
@@ -34,6 +38,7 @@ const App = () => {
     };
     setPersons(persons.concat(personObject));
     setNewName("");
+    setNewNumber("");
   };
 
   const personsToShow =
@@ -46,28 +51,20 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with{" "}
-        <input value={filterCharacter} onChange={handleFilterInput} />
-      </div>
-      <h2>add a new</h2>
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input value={newName} onChange={handlePersonInput} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handlerNumberInput} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      {personsToShow.map((person) => (
-        <div key={person.id}>
-          {person.name} {person.number}
-        </div>
-      ))}
+      <Filter
+        filterCharacter={filterCharacter}
+        handleFilterInput={handleFilterInput}
+      />
+      <h3>add a new</h3>
+      <PersonForm
+        addPerson={addPerson}
+        newName={newName}
+        newNumber={newNumber}
+        handlePersonInput={handlePersonInput}
+        handleNumberInput={handleNumberInput}
+      />
+      <h3>Numbers</h3>
+      <Persons personsToShow={personsToShow} />
     </div>
   );
 };
