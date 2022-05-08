@@ -26,6 +26,16 @@ const App = () => {
   const handleNumberInput = (event) => {
     setNewNumber(event.target.value);
   };
+  const personDeleteHandler = (event) => {
+    const personId = parseInt(event.target.value);
+    const personToDelete = persons.filter(
+      (person) => person.id === personId
+    )[0];
+    if (window.confirm(`Delete ${personToDelete.name}?`)) {
+      personService.deleteContact(personId);
+      setPersons(persons.filter((person) => person.id !== personId));
+    }
+  };
 
   const addPerson = (event) => {
     event.preventDefault();
@@ -72,7 +82,10 @@ const App = () => {
         handleNumberInput={handleNumberInput}
       />
       <h3>Numbers</h3>
-      <Persons personsToShow={personsToShow} />
+      <Persons
+        personsToShow={personsToShow}
+        personDeleteHandler={personDeleteHandler}
+      />
     </div>
   );
 };
