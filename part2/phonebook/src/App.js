@@ -32,15 +32,23 @@ const App = () => {
     if (persons.filter((person) => person.name === newName).length > 0) {
       alert(`${newName} is already added to phonebook`);
       return;
+    } else if (newName === "" || newNumber === "") {
+      alert("Invalid credentials. Please input a name and number.");
+      return;
     }
     const personObject = {
       id: persons.length + 1,
       name: newName,
       number: newNumber,
     };
-    setPersons(persons.concat(personObject));
-    setNewName("");
-    setNewNumber("");
+
+    axios
+      .post("http://localhost:3001/persons", personObject)
+      .then((response) => {
+        setPersons(persons.concat(response.data));
+        setNewName("");
+        setNewNumber("");
+      });
   };
 
   const personsToShow =
