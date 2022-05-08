@@ -24,6 +24,16 @@
       "id": 5,
       "name": "Isaac Newton",
       "number": "566555"
+    },
+    {
+      "id": 6,
+      "name": "Albert Einstein",
+      "number": "3141615"
+    },
+    {
+      "id": 7,
+      "name": "Charles Babbage",
+      "number": "9999777"
     }
   ]
 }
