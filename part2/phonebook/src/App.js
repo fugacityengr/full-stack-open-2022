@@ -39,18 +39,37 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault();
-    if (persons.filter((person) => person.name === newName).length > 0) {
-      alert(`${newName} is already added to phonebook`);
-      return;
+    const newPersonObject = {
+      name: newName,
+      number: newNumber,
+    };
+    const existingPersonId =
+      persons.filter((person) => person.name === newName).length > 0
+        ? persons.filter((person) => person.name === newName)[0].id
+        : false;
+    if (existingPersonId) {
+      if (
+        window.confirm(
+          `${newPersonObject.name} us already added to phonebook, replace the old number with a new one?`
+        )
+      ) {
+        personService
+          .updateContact(existingPersonId, newPersonObject)
+          .then((updatedPerson) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== existingPersonId ? person : updatedPerson
+              )
+            );
+            setNewName("");
+            setNewNumber("");
+          });
+        return;
+      }
     } else if (newName === "" || newNumber === "") {
       alert("Invalid credentials. Please input a name and number.");
       return;
     }
-    const newPersonObject = {
-      id: persons.length + 1,
-      name: newName,
-      number: newNumber,
-    };
 
     personService.createContact(newPersonObject).then((newPerson) => {
       setPersons(persons.concat(newPerson));
